@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relogio Digital IA</title>
+</head>
+<style>
+        *
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background: #222;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .view 
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            -webkit-perspective: 400;
+                perspective: 400;
+        }
+
+        .plane 
+        {
+
+            width: 120px;
+            height: 120px;
+            -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+        }
+
+        .plane.main 
+        {
+            position: absolute;
+            top: -350px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            -webkit-transform: rotateX(60deg) rotateZ(-30deg);
+                transform: rotateX(60deg) rotateZ(-30deg);
+            -webkit-animation: rotate 20s infinite linear;
+                animation: rotate 20s infinite linear;
+        }
+
+        .plane.main .circle 
+        {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            border-radius: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 0 60px crimson, inset 0 0 60px crimson;
+        }
+
+        .plane.main .circle::before, .plane.main .circle::after 
+        {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 10%;
+            height: 10%;
+            border-radius: 100%;
+            background: crimson;
+            box-sizing: border-box;
+            box-shadow: 0 0 60px 2px crimson;
+        }
+
+        .plane.main .circle::before 
+        {
+        -webkit-transform: translateZ(-90px);
+            transform: translateZ(-90px);
+        }
+
+        .plane.main .circle::after 
+        {
+            -webkit-transform: translateZ(90px);
+                transform: translateZ(90px);
+        }
+
+        .plane.main .circle:nth-child(1) 
+        {
+            -webkit-transform: rotateZ(72deg) rotateX(63.435deg);
+                transform: rotateZ(72deg) rotateX(63.435deg);
+        }
+
+        .plane.main .circle:nth-child(2) 
+        {
+            -webkit-transform: rotateZ(144deg) rotateX(63.435deg);
+                transform: rotateZ(144deg) rotateX(63.435deg);
+        }
+
+        .plane.main .circle:nth-child(3) 
+        {
+            -webkit-transform: rotateZ(216deg) rotateX(63.435deg);
+                transform: rotateZ(216deg) rotateX(63.435deg);
+        }
+
+        .plane.main .circle:nth-child(4) 
+        {
+            -webkit-transform: rotateZ(288deg) rotateX(63.435deg);
+                transform: rotateZ(288deg) rotateX(63.435deg);
+        }
+
+        .plane.main .circle:nth-child(5) 
+        {
+            -webkit-transform: rotateZ(360deg) rotateX(63.435deg);
+                transform: rotateZ(360deg) rotateX(63.435deg);
+        }
+
+        @-webkit-keyframes rotate 
+        {
+            0% 
+            {
+                -webkit-transform: rotateX(0) rotateY(0) rotateZ(0);
+                    transform: rotateX(0) rotateY(0) rotateZ(0);
+            }
+            100% 
+            {
+                -webkit-transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+                    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes rotate 
+        {
+            0% {
+                -webkit-transform: rotateX(0) rotateY(0) rotateZ(0);
+                        transform: rotateX(0) rotateY(0) rotateZ(0);
+            }
+            100% {
+                -webkit-transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+                        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+            }
+        }
+</style>
+<style>
+    body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    }
+
+    #clock {
+    max-width: 130px;
+    border-radius: 8px;
+    font-family: 'Arial', sans-serif;
+    font-size: 5em;
+    color: white;
+    position: relative;
+    top: 400px;
+    left: 530px;
+    }
+</style>
+<style>
+    .titulo-principal{
+        position: relative;
+    top: 100px;
+    max-width: 480px;
+    text-align: center;
+    margin: 60px auto;
+    font-family:'Courier New', Courier, monospace;
+    color: #fff;
+}
+.titulo-principal:after{
+ content: '|';
+ margin-left: 5px;
+ opacity: 1;
+ animation: pisca .7s infinite;
+}
+
+@keyframes pisca{
+    0%, 100%{
+        opacity: 1;
+    }
+    50%{
+        opacity: 0;
+    }
+}
+</style>
+<body>
+    <div class="view">
+        <div class="plane main">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+        <div id="clock"></div>
+        <h1 class="titulo-principal">Oá, sou Relogio IA</h1>
+    </div>
+    <script>
+        function updateClock() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+
+        var timeString = hours + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+
+        document.getElementById('clock').textContent = timeString;
+
+        // Fale as horas utilizando a Web Speech API
+        var speech = new SpeechSynthesisUtterance();
+        speech.lang = 'pt-BR';
+        speech.text = 'São ' + hours + ' horas e ' + minutes + ' minutos';
+        window.speechSynthesis.speak(speech);
+        }
+
+        // Atualize o relógio a cada segundo
+        setInterval(updateClock, 1000);
+
+        // Execute a função no início para evitar um atraso inicial
+        updateClock();
+    </script>
+    <script>
+        function typeWrite(elemento){
+    const textoArray = elemento.innerHTML.split('');
+    elemento.innerHTML = ' ';
+    textoArray.forEach(function(letra, i){   
+      
+    setTimeout(function(){
+        elemento.innerHTML += letra;
+    }, 75 * i)
+
+  });
+}
+const titulo = document.querySelector('.titulo-principal');
+typeWrite(titulo);
+    </script>
+</body>
+</html>
