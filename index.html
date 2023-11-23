@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relogio Digital IA</title>
+    <title>RELOGIO DIGITAL IA CHATBOT</title>
 </head>
 <style>
         *
@@ -153,6 +153,63 @@
         }
 </style>
 <style>
+    .chat-container 
+    {
+        max-width: 400px;
+        margin: 50px auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+        top: 190px;
+        z-index: 1;
+    }
+
+    .chat-header 
+    {
+    
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .chat-box 
+    {
+        background-color: #6c9b58;
+        color: white;
+        padding: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        
+    }
+
+    .user-input 
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f1f1f1;
+    }
+
+    .user-input input 
+    {
+        flex: 1;
+        padding: 8px;
+    }
+
+    .user-input button 
+    {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+<style>
     body {
     display: flex;
     align-items: center;
@@ -168,7 +225,7 @@
     font-size: 5em;
     color: white;
     position: relative;
-    top: 400px;
+    top: 300px;
     left: 530px;
     }
 </style>
@@ -199,6 +256,20 @@
 }
 </style>
 <body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>ChatBot</h2>
+            "Pergunte: Como você está"
+            "Pergunte: Qual é o seu nome"
+        </div>
+        <div class="chat-box" id="chatBox">
+
+        </div>
+        <div class="user-input">
+            <input type="text" id="userInput" placeholder="Faça uma Pergunta...">
+            <button onclick="sendMessage()">Perguntar</button>
+        </div>
+    </div>
     <div class="view">
         <div class="plane main">
           <div class="circle"></div>
@@ -212,43 +283,89 @@
         <h1 class="titulo-principal">Oá, sou Relogio IA</h1>
     </div>
     <script>
+        var lastHour = -1;
+        var lastMinute = -1;
+
         function updateClock() {
-        var now = new Date();
-        var hours = now.getHours();
-        var minutes = now.getMinutes();
-        var seconds = now.getSeconds();
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
 
-        var timeString = hours + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        document.getElementById('clock').textContent = timeString;
+            var timeString = hours + ':' + minutes + ':' + seconds;
+            document.getElementById('clock').textContent = timeString;
 
-        // Fale as horas utilizando a Web Speech API
-        var speech = new SpeechSynthesisUtterance();
-        speech.lang = 'pt-BR';
-        speech.text = 'São ' + hours + ' horas e ' + minutes + ' minutos';
-        window.speechSynthesis.speak(speech);
+            if (hours !== lastHour) {
+                var utterance = new SpeechSynthesisUtterance("Olá, sou Relógio A I ,e também sou Chati Bote");
+                speechSynthesis.speak(utterance);
+                lastHour = hours;
+            }
+
+            if (hours !== lastHour) {
+                var utterance = new SpeechSynthesisUtterance("Agora são " + hours + " horas");
+                speechSynthesis.speak(utterance);
+                lastHour = hours;
+            }
+
+            if (minutes !== lastMinute) {
+                var utterance = new SpeechSynthesisUtterance("são " + hours + " horas e " + minutes + " minutos.");
+                speechSynthesis.speak(utterance);
+                lastMinute = minutes;
+            }
         }
 
-        // Atualize o relógio a cada segundo
         setInterval(updateClock, 1000);
 
-        // Execute a função no início para evitar um atraso inicial
         updateClock();
     </script>
     <script>
         function typeWrite(elemento){
-    const textoArray = elemento.innerHTML.split('');
-    elemento.innerHTML = ' ';
-    textoArray.forEach(function(letra, i){   
-      
-    setTimeout(function(){
-        elemento.innerHTML += letra;
-    }, 75 * i)
+            const textoArray = elemento.innerHTML.split('');
+            elemento.innerHTML = ' ';
+            textoArray.forEach(function(letra, i){   
+            
+            setTimeout(function(){
+                elemento.innerHTML += letra;
+            }, 75 * i)
 
-  });
-}
-const titulo = document.querySelector('.titulo-principal');
-typeWrite(titulo);
+        });
+        }
+        const titulo = document.querySelector('.titulo-principal');
+        typeWrite(titulo);
+    </script>
+    <script>
+        function sendMessage() {
+        var userInput = document.getElementById("userInput");
+        var chatBox = document.getElementById("chatBox");
+
+        var userMessage = userInput.value.trim();
+
+        if (userMessage !== "") {
+    
+            chatBox.innerHTML += '<div class="message user-message">' + userMessage + '</div>';
+
+            var botMessage;
+            if (userMessage.toLowerCase().includes("como você está")) {
+                botMessage = "Eu sou um chatbot, não tenho sentimentos, mas obrigado por perguntar!";
+            } else if (userMessage.toLowerCase().includes("qual é o seu nome")) {
+                botMessage = "Eu sou o ChatBot, seu assistente virtual.";
+            } else {
+                botMessage = "Desculpe, eu não entendi a pergunta. Posso ajudar com mais alguma coisa?";
+            }
+
+            setTimeout(function () {
+                chatBox.innerHTML += '<div class="message bot-message">' + botMessage + '</div>';
+    
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 500);
+
+            userInput.value = "";
+        }
+    }
     </script>
 </body>
 </html>
