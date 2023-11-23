@@ -263,7 +263,6 @@
             "Pergunte: Qual é o seu nome"
         </div>
         <div class="chat-box" id="chatBox">
-
         </div>
         <div class="user-input">
             <input type="text" id="userInput" placeholder="Faça uma Pergunta...">
@@ -321,8 +320,7 @@
         setInterval(updateClock, 1000);
 
         updateClock();
-    </script>
-    <script>
+
         function typeWrite(elemento){
             const textoArray = elemento.innerHTML.split('');
             elemento.innerHTML = ' ';
@@ -336,8 +334,7 @@
         }
         const titulo = document.querySelector('.titulo-principal');
         typeWrite(titulo);
-    </script>
-    <script>
+
         function sendMessage() {
         var userInput = document.getElementById("userInput");
         var chatBox = document.getElementById("chatBox");
